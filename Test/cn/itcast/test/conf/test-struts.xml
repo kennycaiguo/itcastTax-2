@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+ 
+ 
+<struts>
+<include file="cn/itcast/test/conf/test-struts.xml"/>
+	<package name="test-action" namespace="/" extends="struts-default">
+		<action name="test_*" class="cn.itcast.test.TestAction" method="{1}">
+			<result name="success">/WEB-INF/jsp/test.jsp</result>
+		</action>
+	</package>
+</struts>
