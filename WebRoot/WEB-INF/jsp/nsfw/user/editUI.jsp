@@ -86,6 +86,7 @@
             <td><s:textfield id="account" name="user.account" onchange="doverify()"/></td>
         </tr>        
         <tr>
+        
             <td class="tdBg" width="200px">密码：</td>
             <td><s:textfield name="user.password"/></td>
         </tr>
