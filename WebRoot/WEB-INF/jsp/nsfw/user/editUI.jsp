@@ -83,7 +83,7 @@
         </tr>
         <tr>
             <td class="tdBg" width="200px">帐号：</td>
-            <td><s:textfield name="user.account" onchange="doverify()"/></td>
+            <td><s:textfield id="account" name="user.account" onchange="doverify()"/></td>
         </tr>
         <tr>
             <td class="tdBg" width="200px">密码：</td>
@@ -95,7 +95,10 @@
         </tr>
         <tr>
             <td class="tdBg" width="200px">角色：</td>
-            <td></td>
+            <td>
+            	<s:checkboxlist list="#roleList" name="userRoleIds" listKey="roleId" listValue="name">
+    			</s:checkboxlist>
+            </td>
         </tr>
         <tr>
             <td class="tdBg" width="200px">电子邮箱：</td>

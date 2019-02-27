@@ -23,8 +23,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import cn.itcast.core.util.ExcelUtil;
+import cn.itcast.nsfw.role.entity.Role;
 import cn.itcast.nsfw.user.dao.UserDao;
 import cn.itcast.nsfw.user.entity.User;
+import cn.itcast.nsfw.user.entity.UserRole;
+import cn.itcast.nsfw.user.entity.UserRoleId;
 import cn.itcast.nsfw.user.service.UserService;
 @Service("userService")
 public class UserServiceImpl implements UserService{
@@ -119,5 +122,34 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<User> findUserByAccountAndId(String id, String account) {
 		return userDao.findUserByAccountAndId(id,account);
+	}
+	@Override
+	public void saveUserAndRole(User user, String[] userRoleIds) {
+		//1.保存用户
+		save(user);
+		//2.保存用户对于的角色
+		if(userRoleIds!=null){
+			for (String roleId:userRoleIds) {
+				userDao.saveUserRole(new UserRole(new UserRoleId(user.getId(),new Role(roleId))));
+			}
+		}
+	}
+	 
+	@Override
+	public void updateUserAndRole(User user, String[] userRoleIds) {
+		//1.根据用户删除该用户的所有角色
+		userDao.deleteUserRoleByUserId(user.getId());
+		//2.更新用户
+		update(user);
+		//3.保存用户对应的角色
+		if(userRoleIds!=null){
+			for (String roleId:userRoleIds) {
+				userDao.saveUserRole(new UserRole(new UserRoleId(user.getId(),new Role(roleId))));
+			}
+		}
+	}
+	@Override
+	public String[] getRoleIdByUserId(String id) {
+		return userDao.getRoleIdByUserId(id);
 	}
 }

@@ -26,5 +26,8 @@ public interface UserService {
 		void importExcel(File userExcel, String userExcelFileName);
 		//
 		List<User> findUserByAccountAndId(String id, String account);
+		void updateUserAndRole(User user, String[] userRoleIds);
+		void saveUserAndRole(User user, String[] userRoleIds);
+		String[] getRoleIdByUserId(String id);
 		
 }

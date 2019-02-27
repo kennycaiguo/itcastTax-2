@@ -4,6 +4,7 @@ import java.util.List;
 
 import cn.itcast.core.dao.BaseDao;
 import cn.itcast.nsfw.user.entity.User;
+import cn.itcast.nsfw.user.entity.UserRole;
 
 public interface UserDao extends BaseDao<User> {
 	/**
@@ -13,5 +14,11 @@ public interface UserDao extends BaseDao<User> {
 	 * @return 用户列表
 	 */
 	public List<User> findUserByAccountAndId(String id, String account);
+
+	void deleteUserRoleByUserId(String id);
+
+	void saveUserRole(UserRole userRole);
+
+	String[] getRoleIdByUserId(String id);
 	
 }

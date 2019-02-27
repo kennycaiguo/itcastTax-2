@@ -13,96 +13,115 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
 
+import cn.itcast.nsfw.role.service.RoleService;
 import cn.itcast.nsfw.user.entity.User;
 import cn.itcast.nsfw.user.service.UserService;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class UserAction extends ActionSupport{
 
 	@Resource
 	private UserService userService;
+	@Resource
+	private RoleService roleService;
+	//用户角色选择的id们
+	private String[] userRoleIds;
+	
 	private List<User> userList;
 	private User user;
 	
+	//跳转到新增页面
+	public String addUI(){
+		//加载角色列表
+		ActionContext.getContext().getContextMap().put("roleList", roleService.findObjects());
+		return "addUI";
+	}
 	//列表页面
 	public String listUI(){
 		userList=userService.findObjects();
 		return "listUI";
 	}
-	//跳转到新增页面
-	public String addUI(){
-		return "addUI";
-	}
 	//保存新增
-	public String add(){
-		try {
-			if(user!=null){
-				//处理头像
-				if(headImg!=null){
-					//1、保存头像到upload/user
-					//获取保存路径的绝对地址
-//					String filePath=ServletActionContext.getServletContext().getRealPath("upload/user");
-					String filePath=ServletActionContext.getServletContext().getRealPath("/upload/user");
-					//生成带格式的随机文件名称
-					String fileName=UUID.randomUUID().toString()+headImgFileName.substring(headImgFileName.lastIndexOf("."));
-					//复制文件
-					FileUtils.copyFile(headImg, new File(filePath,fileName));
-					
-					//2、设置用户头像路径
-					user.setHeadImg("user/"+fileName);
-				}
-				
-				userService.save(user);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return "list";
-	}
-	//跳转到编辑界面
-	public String editUI(){
-		if(user!=null && user.getId()!=null){
-			user=userService.findObjectById(user.getId());
-		}
-		return "editUI";
-	}
-	//保存编辑
-	public String edit(){
-		try {
-			if(user!=null){
-				//处理头像
-				if(headImg!=null){
-					
-					//1、保存头像到upload/user
-					//获取保存路径的绝对地址
-					String filePath=ServletActionContext.getServletContext().getRealPath("/upload/user");
-					//生成带格式的随机文件名称
-					String fileName=UUID.randomUUID().toString()+headImgFileName.substring(headImgFileName.lastIndexOf("."));
-					//复制文件
-					FileUtils.copyFile(headImg, new File(filePath,fileName));
-					
-					//如果旧头像存在，把旧头像删除
-					if(user.getHeadImg()!=null){
-						String oldfilename=filePath+"\\"+user.getHeadImg().substring(5);
-						File file=new File(oldfilename);
-						file.delete();
+		public String add(){
+			try {
+				if(user!=null){
+					//处理头像
+					if(headImg!=null){
+						//1、保存头像到upload/user
+						//获取保存路径的绝对地址
+						String filePath=ServletActionContext.getServletContext().getRealPath("/upload/user");
+						//生成带格式的随机文件名称
+						String fileName=UUID.randomUUID().toString()+headImgFileName.substring(headImgFileName.lastIndexOf("."));
+						//复制文件
+						FileUtils.copyFile(headImg, new File(filePath,fileName));
+						
+						//2、设置用户头像路径
+						user.setHeadImg("user/"+fileName);
 					}
 					
-					//2、设置用户头像路径
-					user.setHeadImg("user/"+fileName);
+					//saveUserAndRole方法用来同时保存用户和用户的角色
+					userService.saveUserAndRole(user,userRoleIds);
+					
 				}
-				
-				userService.update(user);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return "list";
 		}
-		return "list";
-
-	}
+	//跳转到编辑界面
+		//跳转到编辑界面
+		public String editUI(){
+			//加载角色列表
+			ActionContext.getContext().getContextMap().put("roleList", roleService.findObjects());
+			if(user!=null && user.getId()!=null){
+				user=userService.findObjectById(user.getId());
+				//处理角色回显
+				String[] ids=userService.getRoleIdByUserId(user.getId());
+				if(ids!=null&&ids.length>0){
+					userRoleIds=ids;
+				}
+			}
+			return "editUI";
+		}
+	//保存编辑
+		public String edit(){
+			try {
+				if(user!=null){
+					//处理头像
+					if(headImg!=null){
+						
+						//1、保存头像到upload/user
+						//获取保存路径的绝对地址
+						String filePath=ServletActionContext.getServletContext().getRealPath("/upload/user");
+						//生成带格式的随机文件名称
+						String fileName=UUID.randomUUID().toString()+headImgFileName.substring(headImgFileName.lastIndexOf("."));
+						//复制文件
+						FileUtils.copyFile(headImg, new File(filePath,fileName));
+						
+						//如果旧头像存在，把旧头像删除
+						if(user.getHeadImg()!=null){
+							String oldfilename=filePath+"\\"+user.getHeadImg().substring(5);
+							File file=new File(oldfilename);
+							file.delete();
+						}
+						
+						/**/
+						
+						//2、设置用户头像路径
+						user.setHeadImg("user/"+fileName);
+					}
+					
+					userService.updateUserAndRole(user,userRoleIds);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return "list";
+		}
 	//删除
 	public String delete(){
 		if(user!=null && user.getId()!=null){
@@ -251,5 +270,11 @@ public class UserAction extends ActionSupport{
 			e.printStackTrace();
 		}
 		
+	}
+	public String[] getUserRoleIds() {
+		return userRoleIds;
+	}
+	public void setUserRoleIds(String[] userRoleIds) {
+		this.userRoleIds = userRoleIds;
 	}
 }

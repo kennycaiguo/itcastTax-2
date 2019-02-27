@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import cn.itcast.core.dao.impl.BaseDaoImpl;
 import cn.itcast.nsfw.user.dao.UserDao;
 import cn.itcast.nsfw.user.entity.User;
+import cn.itcast.nsfw.user.entity.UserRole;
 
 public class UserDaoImpl extends BaseDaoImpl<User> 
 implements UserDao{
@@ -24,5 +25,31 @@ implements UserDao{
 			query.setParameter(1, id);
 		}
 		return query.list();
+	}
+	@Override
+	public void saveUserRole(UserRole userRole) {
+		getHibernateTemplate().save(userRole);
+	}
+	 
+	 
+	@Override
+	public void deleteUserRoleByUserId(String id) {
+		 Query query=getSession().createQuery("DELETE FROM UserRole WHERE id.userId=?");
+		 query.setParameter(0, id);
+		 query.executeUpdate();
+	}
+	@Override
+	public String[] getRoleIdByUserId(String id) {
+		Query query=getSession().createQuery("FROM UserRole WHERE id.userId=?");
+		query.setParameter(0, id);
+		List<UserRole> list=query.list();
+		String[] ids=null;
+		if(list!=null&&list.size()>0){
+			ids=new String[list.size()];
+			for (int i = 0; i < list.size(); i++) {
+				ids[i]=list.get(i).getId().getRole().getRoleId();
+			}
+		}
+		return ids;
 	}
 }
