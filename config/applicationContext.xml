@@ -45,6 +45,7 @@
 			<list>
 				<value>classpath:cn/itcast/test/entity/*.hbm.xml</value>
 				<value>classpath:cn/itcast/nsfw/user/entity/*.hbm.xml</value>
+				<value>classpath:cn/itcast/nsfw/role/entity/*.hbm.xml</value>
 			</list>
 		</property>
 		
