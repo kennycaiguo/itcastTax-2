@@ -11,6 +11,8 @@ public class Constant {
 	public static String PRIVILEGE_ZXXX="zxxx";
 	public static String PRIVILEGE_NSFW="nsfw";
 	public static String PRIVILEGE_SPACE="spaces";
+	//系统中用户在session中的内容
+	public static String USER="SYS_USER";
 	
 	public static Map<String,String> PRIVILEGE_MAP;
 	static{
@@ -20,5 +22,5 @@ public class Constant {
 		PRIVILEGE_MAP.put(PRIVILEGE_ZXXX, "在线学习");
 		PRIVILEGE_MAP.put(PRIVILEGE_NSFW, "纳税服务");
 		PRIVILEGE_MAP.put(PRIVILEGE_SPACE, "我的空间");
-	}
+	}			
 }

@@ -152,4 +152,10 @@ public class UserServiceImpl implements UserService{
 	public String[] getRoleIdByUserId(String id) {
 		return userDao.getRoleIdByUserId(id);
 	}
+	@Override
+	public List<User> findUserByAccountAndPassword(String account,
+			String password) {
+		
+		return userDao.findUserByAccountAndPassword(account,password);
+	}
 }

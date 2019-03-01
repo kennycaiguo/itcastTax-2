@@ -20,5 +20,7 @@ public interface UserDao extends BaseDao<User> {
 	void saveUserRole(UserRole userRole);
 
 	String[] getRoleIdByUserId(String id);
+
+	List<User> findUserByAccountAndPassword(String account, String password);
 	
 }

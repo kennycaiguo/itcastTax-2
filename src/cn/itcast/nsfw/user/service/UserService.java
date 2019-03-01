@@ -29,5 +29,6 @@ public interface UserService {
 		void updateUserAndRole(User user, String[] userRoleIds);
 		void saveUserAndRole(User user, String[] userRoleIds);
 		String[] getRoleIdByUserId(String id);
+		List<User> findUserByAccountAndPassword(String account, String password);
 		
 }
