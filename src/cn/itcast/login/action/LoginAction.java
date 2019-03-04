@@ -65,5 +65,11 @@ public class LoginAction extends ActionSupport{
 			loginResult="请输入账号和密码!";
 		}
 		return toLoginUI();
-	}	
+	}
+	//退出，注销
+	public String logout(){
+		//清除session中的用户信息
+		ServletActionContext.getRequest().getSession().removeAttribute(Constant.USER);
+		return toLoginUI();
+	}
 }
