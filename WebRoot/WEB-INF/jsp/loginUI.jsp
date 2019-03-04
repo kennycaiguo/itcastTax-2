@@ -19,7 +19,10 @@ request.setAttribute("ctx", path);
 function logins(){
 	document.forms[0].submit();
 }
- 
+//解决子框架嵌套的问题
+if(window != window.parent){
+	window.parent.location.reload(true);
+} 
  
 function setClean(){
 	document.getElementById("account").value = "";

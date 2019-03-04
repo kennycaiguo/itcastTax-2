@@ -38,7 +38,6 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		userDao.save(user);
 	}
-
 	@Override
 	public void update(User user) {
 		// TODO Auto-generated method stub
@@ -47,8 +46,9 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void delete(Serializable id) {
-		// TODO Auto-generated method stub
 		userDao.delete(id);
+		//删除用户对应的所有权限
+		userDao.deleteUserRoleByUserId(id.toString());
 	}
 
 	@Override
@@ -149,13 +149,13 @@ public class UserServiceImpl implements UserService{
 		}
 	}
 	@Override
-	public String[] getRoleIdByUserId(String id) {
-		return userDao.getRoleIdByUserId(id);
+	public List<UserRole> getUserRolesByUserId(String id) {
+		return userDao.getUserRolesByUserId(id);
 	}
+
 	@Override
-	public List<User> findUserByAccountAndPassword(String account,
-			String password) {
-		
-		return userDao.findUserByAccountAndPassword(account,password);
+	public List<User> findUserByAccountAndPass(String account, String password) {
+		return userDao.findUsersByAcccountAndPass(account, password);
 	}
+
 }

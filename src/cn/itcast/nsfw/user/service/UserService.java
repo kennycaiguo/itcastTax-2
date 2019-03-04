@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.ServletOutputStream;
 
 import cn.itcast.nsfw.user.entity.User;
+import cn.itcast.nsfw.user.entity.UserRole;
 
 public interface UserService {
 
@@ -26,9 +27,13 @@ public interface UserService {
 		void importExcel(File userExcel, String userExcelFileName);
 		//
 		List<User> findUserByAccountAndId(String id, String account);
-		void updateUserAndRole(User user, String[] userRoleIds);
-		void saveUserAndRole(User user, String[] userRoleIds);
-		String[] getRoleIdByUserId(String id);
-		List<User> findUserByAccountAndPassword(String account, String password);
+		//保存用户及其对应的角色
+		public void saveUserAndRole(User user, String... roleIds);
+		//保存用户及其对应的角色
+		public void updateUserAndRole(User user, String... roleIds);
+		//根据用户id获取该用户对应的所有用户角色
+		public List<UserRole> getUserRolesByUserId(String id);
+		//根据用户的帐号和密码查询用户列表
+		public List<User> findUserByAccountAndPass(String account, String password);
 		
 }

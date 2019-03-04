@@ -34,6 +34,7 @@
 			<result name="sysError">/WEB-INF/jsp/error.jsp</result>
 			<result name="sysError">/WEB-INF/jsp/error.jsp</result>
 			<result name="input">/WEB-INF/jsp/error.jsp</result>
+			<result name="noPermissionUI">/WEB-INF/jsp/noPermissionUI.jsp</result>
 		</global-results>
 		
 		<!-- 全局异常映射 -->

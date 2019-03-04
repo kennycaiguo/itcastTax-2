@@ -15,6 +15,7 @@ import org.apache.struts2.ServletActionContext;
 
 import cn.itcast.nsfw.role.service.RoleService;
 import cn.itcast.nsfw.user.entity.User;
+import cn.itcast.nsfw.user.entity.UserRole;
 import cn.itcast.nsfw.user.service.UserService;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -79,9 +80,12 @@ public class UserAction extends ActionSupport{
 			if(user!=null && user.getId()!=null){
 				user=userService.findObjectById(user.getId());
 				//处理角色回显
-				String[] ids=userService.getRoleIdByUserId(user.getId());
-				if(ids!=null&&ids.length>0){
-					userRoleIds=ids;
+				List<UserRole> list = userService.getUserRolesByUserId(user.getId());
+				if(list != null && list.size() > 0){
+					userRoleIds = new String[list.size()];
+					for(int i = 0; i < list.size(); i++){
+						userRoleIds[i] = list.get(i).getId().getRole().getRoleId();
+					}
 				}
 			}
 			return "editUI";

@@ -2,6 +2,7 @@ package cn.itcast.nsfw.user.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class User implements Serializable{
 
@@ -24,6 +25,14 @@ public class User implements Serializable{
 	//用户状态
 	public final static String USER_STATE_VALID="1";//有效
 	public final static String USER_STATE_INVALID="0";//有效
+	
+	private List<UserRole> userRoles;
+	public List<UserRole> getUserRoles() {
+		return userRoles;
+	}
+	public void setUserRoles(List<UserRole> userRoles) {
+		this.userRoles = userRoles;
+	}
 	public User() {
 		// TODO Auto-generated constructor stub
 	}
