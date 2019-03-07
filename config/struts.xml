@@ -5,6 +5,8 @@
  
  
 <struts>
+	<!-- 信息发布的struts配置文件 -->
+	<include file="cn/itcast/nsfw/info/conf/info-struts.xml"/>
 	<!-- 登录跳转的struts配置文件 -->
 	<include file="cn/itcast/login/conf/login-struts.xml"/>
 	<!-- 子系统跳转的struts配置文件 -->
